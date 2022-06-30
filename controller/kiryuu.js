@@ -1,4 +1,4 @@
-import { kiryuu, kiryuuDetail } from "../models/kiryuuModel.js";
+import { kiryuu, kiryuuDetail, kiryuuSearch } from "../models/kiryuuModel.js";
 import express from "express";
 
 
@@ -25,4 +25,15 @@ export const showKomikDetail = async (req, res, err) => {
     } catch (e) {
         err(e);
     };
+}
+
+export const searchKomik = async (req, res, err) => {
+    try {
+        let cari = req.params.cari;
+        let query = `https://kiryuu.id/?s=${cari}`
+        const result = await kiryuuSearch(query)
+        res.send(result)
+    } catch (e) {
+        err(e);
+    }
 }

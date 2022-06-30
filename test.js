@@ -1,10 +1,10 @@
 import fetch from "node-fetch";
-import cherio from 'cherio'
-import readline from "readline-sync";
+import cherio from 'cherio';
 
+const replaceMangaPage = "https://kiryuu.id/manga/"
 
-export const kiryuuDetail = () => new Promise((resolve, reject) => {
-    fetch("https://kiryuu.id/manga/hackgu/", {
+export const kiryuuSearch = () => new Promise((resolve, reject) => {
+    fetch("https://kiryuu.id/?s=aku", {
         method: 'GET',
         headers: {
             'authority': 'kiryuu.id',
@@ -13,55 +13,61 @@ export const kiryuuDetail = () => new Promise((resolve, reject) => {
     })
         .then(res => res.text())
         .then(res => {
-            const det = cherio.load(res)
-            const judul = det('div.seriestucon > div.seriestuheader > h1').text();
-            const sinposis = det('div.seriestucon > div.seriestucontent > div.seriestucontentr > div.seriestuhead > div.entry-content.entry-content-single > p').text();
-            const author = det('div.seriestucon > div.seriestucontent > div.seriestucontentr > div.seriestucont > div > table > tbody > tr:nth-child(4) > td:nth-child(2)').text();
-            const listChapter = [];
-            const listLink = [];
-            const daftar = new Array();
-            const isi = [];
-
-            det('div.eplister').each(function (a, b) {
-                det(b).find('div.eph-num').each(function (c, d) {
-                    det(d).find('span.chapternum').each(function (g, h) {
-                        listChapter.push(det(h).text())
+            const ser = cherio.load(res)
+            const idTitle = [];
+            const chapter = [];
+            const thum = [];
+            const rating = [];
+            const hasil = [];
+            const endpoin = [];
+            ser('div.bsx').each(function (a, b) {
+                ser(b).find('div.limit').each(function (c, d) {
+                    ser(d).find('img').each(function (g, h) {
+                        idTitle.push(ser(h).attr('title'))
+                    })
+                })
+                ser('div.bsx').each(function (c, d) {
+                    ser(d).find('div.epxs').each(function (e, f) {
+                        chapter.push(ser(f).text())
                     })
 
                 })
-            })
-
-            det('div.eplister').each(function (a, b) {
-                det(b).find('div.eph-num').each(function (c, d) {
-                    det(d).find('a').each(function (e, f) {
-                        listLink.push(det(f).attr('href'))
+                ser('div.bsx').each(function (s, t) {
+                    ser(t).find('div.limit').each(function (u, v) {
+                        ser(v).find('img').each(function (w, x) {
+                            thum.push(ser(x).attr('src'))
+                        })
+                    })
+                })
+                ser('div.bsx').each(function (j, k) {
+                    ser(k).find('div.numscore').each(function (m, n) {
+                        rating.push(ser(n).text())
+                    })
+                })
+                ser('div.bs').each(function (o, p) {
+                    ser(p).find('a').each(function (p, q) {
+                        endpoin.push(ser(q).attr('href').replace(replaceMangaPage, "http://localhost:5000/kiryuu/manga/"))
                     })
                 })
             })
-
-            // for (let i = 0; i < listChapter.length; i++) {
-            //     daftar.push({
-            //         Chapter: listChapter[i],
-            //         Link: listLink[i]
-            //     })
-            // }
-
-
-            isi.push({
-                Judul: judul,
-                Author: author,
-                Sinposis: sinposis,
-                Chapter: listChapter,
-                Endpoint: listLink
-                // Data: [Data]
-            })
-            resolve(isi)
+            for (let i = 0; i < idTitle.length; i++) {
+                hasil.push({
+                    Judul: idTitle[i],
+                    Chapter: chapter[i],
+                    Rating: rating[i],
+                    Endpoint: endpoin[i],
+                    Gambar: thum[i]
+                })
+            }
+            resolve(hasil)
         })
         .catch(reject)
-})
+});
+
+
 
 async function getAll() {
-    const result = await kiryuuDetail();
+    const result = await kiryuuSearch();
     console.log(result);
 }
 getAll();

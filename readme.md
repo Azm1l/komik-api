@@ -14,7 +14,7 @@ Restful API Komik Bahasa Indonesia
 # DOKUMENTASI
 
 ## Semua Komik
-Get Latest Manga Update
+Get All Comics
 ```
 /kiryuu/page/[pagenumber]
 ```
@@ -22,8 +22,15 @@ contoh : http://localhost:5000/kiryuu/page/2
 
 
 ## Detail Komik
-Get Latest Manga Update
+Get Detail Comic
 ```
-/kiryuu/manga/slug
+/kiryuu/manga/[slug]
 ```
 contoh : http://localhost:5000/kiryuu/manga/nano-machine/
+
+## Cari Komik
+Get Search Comic
+```
+/kiryuu/search/[cari]
+```
+contoh : http://localhost:5000/kiryuu/search/naruto/
