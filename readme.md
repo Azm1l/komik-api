@@ -2,7 +2,7 @@
 Restful API Komik Bahasa Indonesia
 
 # Cara Gunakan Source ini
-1. Clone this repository
+1. Clone repositori ini
     ```bash
     git clone https://github.com/Azm1l/komik-api.git
     ```
