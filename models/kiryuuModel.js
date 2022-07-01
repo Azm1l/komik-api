@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import cherio from 'cherio';
+import { json } from "express";
 
 const replaceMangaPage = "https://kiryuu.id/manga/";
 
@@ -59,7 +60,11 @@ export const kiryuu = (url) => new Promise((resolve, reject) => {
                     Gambar: thum[i]
                 })
             }
-            resolve(hasil)
+            resolve({
+                status: true,
+                message: "succes",
+                hasil
+            })
         })
         .catch(reject)
 });
@@ -82,8 +87,9 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
             const gambar = det('div.seriestucon > div.seriestucontent > div.seriestucontl > div.thumb > img').attr('src');
             const listChapter = [];
             const listLink = [];
-            //const daftar =; new Array();
+            // let daftar = [];
             const isi = [];
+            const tempDaftar = [];
 
             det('div.eplister').each(function (a, b) {
                 det(b).find('div.eph-num').each(function (c, d) {
@@ -101,19 +107,31 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
                     })
                 })
             })
+
+            for (let i = 0; i < listChapter.length; i++) {
+                tempDaftar.push({
+                    chapter: listChapter[i],
+                    link: listLink[i]
+                })
+            }
             isi.push({
                 Judul: judul,
-                Author: author,
-                Gambar: gambar,
-                Sinposis: sinposis,
-                Chapter: listChapter,
-                Endpoint: listLink
-                // Data: [Data]
+                author,
+                gambar,
+                sinposis,
+                tempDaftar
             })
-            resolve(isi)
+            //isi['Data'] = tempDaftar
+
+            resolve({
+                status: true,
+                message: "succes",
+                isi
+            })
         })
         .catch(reject)
 });
+
 
 export const kiryuuSearch = (query) => new Promise((resolve, reject) => {
     fetch(query, {
@@ -171,7 +189,11 @@ export const kiryuuSearch = (query) => new Promise((resolve, reject) => {
                     Gambar: thum[i]
                 })
             }
-            resolve(hasil)
+            resolve({
+                status: true,
+                message: "succes",
+                hasil
+            })
         })
         .catch(reject)
 });
