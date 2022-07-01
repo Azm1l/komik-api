@@ -19,7 +19,7 @@ export const kiryuu = (url) => new Promise((resolve, reject) => {
             const chapter = [];
             const thum = [];
             const rating = [];
-            const hasil = [];
+            const data = [];
             const endpoin = [];
             soup('div.bsx').each(function (a, b) {
                 soup(b).find('div.limit').each(function (c, d) {
@@ -47,23 +47,23 @@ export const kiryuu = (url) => new Promise((resolve, reject) => {
                 })
                 soup('div.bs').each(function (o, p) {
                     soup(p).find('a').each(function (p, q) {
-                        endpoin.push(soup(q).attr('href').replace(replaceMangaPage, "http://localhost:5000/kiryuu/manga/"))
+                        endpoin.push(soup(q).attr('href').replace(replaceMangaPage, ""))
                     })
                 })
             })
             for (let i = 0; i < idTitle.length; i++) {
-                hasil.push({
-                    Judul: idTitle[i],
-                    Chapter: chapter[i],
-                    Rating: rating[i],
-                    Endpoint: endpoin[i],
-                    Gambar: thum[i]
+                data.push({
+                    judul: idTitle[i],
+                    chapter: chapter[i],
+                    rating: rating[i],
+                    endpoint: endpoin[i],
+                    gambar: thum[i]
                 })
             }
             resolve({
                 status: true,
-                message: "succes",
-                hasil
+                message: "success",
+                data
             })
         })
         .catch(reject)
@@ -88,8 +88,8 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
             const listChapter = [];
             const listLink = [];
             // let daftar = [];
-            const isi = [];
-            const tempDaftar = [];
+            const data = [];
+            const endpoint = [];
 
             det('div.eplister').each(function (a, b) {
                 det(b).find('div.eph-num').each(function (c, d) {
@@ -109,24 +109,24 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
             })
 
             for (let i = 0; i < listChapter.length; i++) {
-                tempDaftar.push({
+                endpoint.push({
                     chapter: listChapter[i],
                     link: listLink[i]
                 })
             }
-            isi.push({
-                Judul: judul,
+            data.push({
+                judul,
                 author,
                 gambar,
                 sinposis,
-                tempDaftar
+                endpoint
             })
             //isi['Data'] = tempDaftar
 
             resolve({
                 status: true,
-                message: "succes",
-                isi
+                message: "success",
+                data
             })
         })
         .catch(reject)
@@ -148,7 +148,7 @@ export const kiryuuSearch = (query) => new Promise((resolve, reject) => {
             const chapter = [];
             const thum = [];
             const rating = [];
-            const hasil = [];
+            const data = [];
             const endpoin = [];
             ser('div.bsx').each(function (a, b) {
                 ser(b).find('div.limit').each(function (c, d) {
@@ -176,23 +176,23 @@ export const kiryuuSearch = (query) => new Promise((resolve, reject) => {
                 })
                 ser('div.bs').each(function (o, p) {
                     ser(p).find('a').each(function (p, q) {
-                        endpoin.push(ser(q).attr('href').replace(replaceMangaPage, "http://localhost:5000/kiryuu/manga/"))
+                        endpoin.push(ser(q).attr('href').replace(replaceMangaPage, ""))
                     })
                 })
             })
             for (let i = 0; i < idTitle.length; i++) {
-                hasil.push({
-                    Judul: idTitle[i],
-                    Chapter: chapter[i],
-                    Rating: rating[i],
-                    Endpoint: endpoin[i],
-                    Gambar: thum[i]
+                data.push({
+                    judul: idTitle[i],
+                    chapter: chapter[i],
+                    rating: rating[i],
+                    endpoint: endpoin[i],
+                    gambar: thum[i]
                 })
             }
             resolve({
                 status: true,
-                message: "succes",
-                hasil
+                message: "success",
+                data
             })
         })
         .catch(reject)
