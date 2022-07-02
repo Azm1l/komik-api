@@ -1,17 +1,16 @@
 import express from "express";
 import Router from "./router/router.js"
 import cors from "cors";
-//import Router from "./router/router.js";
 
 const app = express();
 
-//inisiasi express
+//initiation express
 app.use(express());
 
-//gunakan cors
+//use cors
 app.use(cors());
 
-//gunakan router
+//use route
 app.use(Router);
 
 app.listen(5000, () => console.log('SERVER RUNNING AT http://localhost:5000'));

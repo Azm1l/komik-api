@@ -5,7 +5,7 @@ import { json } from "express";
 const replaceMangaPage = "https://kiryuu.id/manga/";
 const replaceUrl = "https://kiryuu.id/";
 
-export const kiryuu = (url) => new Promise((resolve, reject) => {
+export const komik = (url) => new Promise((resolve, reject) => {
     fetch(url, {
         method: 'GET',
         headers: {
@@ -71,7 +71,7 @@ export const kiryuu = (url) => new Promise((resolve, reject) => {
 });
 
 
-export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
+export const komikDetail = (endpoint) => new Promise((resolve, reject) => {
     fetch(endpoint, {
         method: 'GET',
         headers: {
@@ -90,7 +90,6 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
             const gambar = det('div.seriestucon > div.seriestucontent > div.seriestucontl > div.thumb > img').attr('src');
             const listChapter = [];
             const listLink = [];
-            // let daftar = [];
             const data = [];
             const endpoint = [];
 
@@ -114,7 +113,7 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
             for (let i = 0; i < listChapter.length; i++) {
                 endpoint.push({
                     chapter: listChapter[i],
-                    link: listLink[i]
+                    slug: listLink[i]
                 })
             }
             data.push({
@@ -124,8 +123,6 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
                 sinposis,
                 endpoint
             })
-            //isi['Data'] = tempDaftar
-
             resolve({
                 status: true,
                 message: "success",
@@ -136,7 +133,7 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
 });
 
 
-export const kiryuuSearch = (query) => new Promise((resolve, reject) => {
+export const komikSearch = (query) => new Promise((resolve, reject) => {
     fetch(query, {
         method: 'GET',
         headers: {
@@ -201,7 +198,7 @@ export const kiryuuSearch = (query) => new Promise((resolve, reject) => {
         .catch(reject)
 });
 
-export const kiryuuDetailChapter = (chapter) => new Promise((resolve, reject) => {
+export const komikDetailChapter = (chapter) => new Promise((resolve, reject) => {
     fetch(chapter, {
         method: 'GET',
         headers: {
@@ -240,7 +237,6 @@ export const kiryuuDetailChapter = (chapter) => new Promise((resolve, reject) =>
                 status: true,
                 message: "success",
                 data,
-                //chapter_page
             })
         })
         .catch(reject)

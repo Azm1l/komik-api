@@ -16,21 +16,29 @@ Restful API Komik Bahasa Indonesia
 ## Semua Komik
 Get All Comics
 ```
-/kiryuu/page/[pagenumber]
+/komik/page/[pagenumber]
 ```
-contoh : http://localhost:5000/kiryuu/page/2
+contoh : http://localhost:5000/komik/page/2
 
 
 ## Detail Komik
 Get Detail Comic
 ```
-/kiryuu/manga/[slug]
+/kiryuu/[slug]
 ```
-contoh : http://localhost:5000/kiryuu/manga/nano-machine/
+contoh : http://localhost:5000/komik/nano-machine/
+
+## Chapter Detail
+Get Detail Comic
+```
+/komik/detail/[slug]
+```
+contoh : http://localhost:5000/komik/detail/tokyo-revengers-chapter-223
+
 
 ## Cari Komik
 Get Search Comic
 ```
-/kiryuu/search/[cari]
+/komik/search/[cari]
 ```
-contoh : http://localhost:5000/kiryuu/search/naruto/
+contoh : http://localhost:5000/komik/search/naruto/
