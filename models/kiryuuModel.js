@@ -3,6 +3,7 @@ import cherio from 'cherio';
 import { json } from "express";
 
 const replaceMangaPage = "https://kiryuu.id/manga/";
+const replaceUrl = "https://kiryuu.id/";
 
 export const kiryuu = (url) => new Promise((resolve, reject) => {
     fetch(url, {
@@ -80,7 +81,9 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
     })
         .then(res => res.text())
         .then(res => {
-            const det = cherio.load(res)
+            const det = cherio.load(res, {
+                xmlMode: true
+            });
             const judul = det('div.seriestucon > div.seriestuheader > h1').text();
             const sinposis = det('div.seriestucon > div.seriestucontent > div.seriestucontentr > div.seriestuhead > div.entry-content.entry-content-single > p').text();
             const author = det('div.seriestucon > div.seriestucontent > div.seriestucontentr > div.seriestucont > div > table > tbody > tr:nth-child(4) > td:nth-child(2)').text().trim();
@@ -103,7 +106,7 @@ export const kiryuuDetail = (endpoint) => new Promise((resolve, reject) => {
             det('div.eplister').each(function (a, b) {
                 det(b).find('div.eph-num').each(function (c, d) {
                     det(d).find('a').each(function (e, f) {
-                        listLink.push(det(f).attr('href'))
+                        listLink.push(det(f).attr('href').replace(replaceUrl, ""))
                     })
                 })
             })
@@ -198,5 +201,49 @@ export const kiryuuSearch = (query) => new Promise((resolve, reject) => {
         .catch(reject)
 });
 
+export const kiryuuDetailChapter = (chapter) => new Promise((resolve, reject) => {
+    fetch(chapter, {
+        method: 'GET',
+        headers: {
+            'authority': 'kiryuu.id',
+            'user-agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+        }
+    })
+        .then(res => res.text())
+        .then(res => {
+            const det = cherio.load(res, {
+                xmlMode: true
+            });
+            const data = [];
+            const chapterImage = [];
+            const chapter_page = [];
+            const title = det('div.headpost > h1').text();
+
+            det('#readerarea').find('img').each(function (a, b) {
+                chapterImage.push(det(b).attr('src'))
+            })
+
+            for (let i = 0; i < chapterImage.length; i++) {
+                chapter_page.push({
+                    chapter_image_link: chapterImage[i],
+                    image_number: i + 1
+
+                })
+            }
+
+            data.push({
+                title,
+                chapter_page
+            })
+
+            resolve({
+                status: true,
+                message: "success",
+                data,
+                //chapter_page
+            })
+        })
+        .catch(reject)
+});
 
 

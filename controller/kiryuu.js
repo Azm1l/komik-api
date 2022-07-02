@@ -1,4 +1,4 @@
-import { kiryuu, kiryuuDetail, kiryuuSearch } from "../models/kiryuuModel.js";
+import { kiryuu, kiryuuDetail, kiryuuSearch, kiryuuDetailChapter } from "../models/kiryuuModel.js";
 import express from "express";
 
 
@@ -21,6 +21,21 @@ export const showKomikDetail = async (req, res, err) => {
         let slug = req.params.slug;
         let endpoint = `https://kiryuu.id/manga/${slug}`
         const detail = await kiryuuDetail(endpoint)
+        res.send(detail)
+    } catch (e) {
+        err(e);
+    };
+}
+
+//https://kiryuu.id/hackgu-chapter-03/
+//https://kiryuu.id/manga/hackgu/
+
+export const showKomikChapter = async (req, res, err) => {
+    try {
+        let slug = req.params.slug;
+        let chap = req.params.chap;
+        const chapter = `https://kiryuu.id/${slug}}`
+        const detail = await kiryuuDetailChapter(chapter)
         res.send(detail)
     } catch (e) {
         err(e);

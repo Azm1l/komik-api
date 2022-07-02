@@ -1,11 +1,11 @@
 import fetch from "node-fetch";
 import cherio from 'cherio';
-import { json } from "express";
+
 
 const replaceMangaPage = "https://kiryuu.id/manga/"
 
-export const kiryuuDetail = () => new Promise((resolve, reject) => {
-    fetch("https://kiryuu.id/manga/hackgu/", {
+export const kiryuuDetailChapter = () => new Promise((resolve, reject) => {
+    fetch("https://kiryuu.id/hackgu-chapter-03/", {
         method: 'GET',
         headers: {
             'authority': 'kiryuu.id',
@@ -14,59 +14,48 @@ export const kiryuuDetail = () => new Promise((resolve, reject) => {
     })
         .then(res => res.text())
         .then(res => {
-            const det = cherio.load(res)
-            const judul = det('div.seriestucon > div.seriestuheader > h1').text();
-            const sinposis = det('div.seriestucon > div.seriestucontent > div.seriestucontentr > div.seriestuhead > div.entry-content.entry-content-single > p').text();
-            const author = det('div.seriestucon > div.seriestucontent > div.seriestucontentr > div.seriestucont > div > table > tbody > tr:nth-child(4) > td:nth-child(2)').text().trim();
-            const gambar = det('div.seriestucon > div.seriestucontent > div.seriestucontl > div.thumb > img').attr('src');
-            const listChapter = [];
-            const listLink = [];
-            // let daftar = [];
-            const isi = [];
-            const tempDaftar = [];
+            const det = cherio.load(res, {
+                xmlMode: true
+            });
+            const data = [];
+            const chapterImage = [];
+            const chapter_page = [];
+            const title = det('div.headpost > h1').text();
 
-            det('div.eplister').each(function (a, b) {
-                det(b).find('div.eph-num').each(function (c, d) {
-                    det(d).find('span.chapternum').each(function (g, h) {
-                        listChapter.push(det(h).text())
-                    })
-
-                })
+            det('#readerarea').find('img').each(function (a, b) {
+                chapterImage.push(det(b).attr('src'))
             })
 
-            det('div.eplister').each(function (a, b) {
-                det(b).find('div.eph-num').each(function (c, d) {
-                    det(d).find('a').each(function (e, f) {
-                        listLink.push(det(f).attr('href'))
-                    })
-                })
-            })
+            for (let i = 0; i < chapterImage.length; i++) {
+                chapter_page.push({
+                    chapter_image_link: chapterImage[i],
+                    image_number: i + 1
 
-            for (let i = 0; i < listChapter.length; i++) {
-                tempDaftar.push({
-                    chapter: listChapter[i],
-                    link: listLink[i]
                 })
             }
 
-            isi.push({
-                judul,
-                author,
-                gambar,
-                sinposis,
-                //isi['Data']: tempDaftar
+            data.push({
+                title,
+                chapter_page
             })
-            isi['Data'] = tempDaftar;
 
-            resolve(isi)
+            resolve({
+                status: true,
+                message: "success",
+                data,
+                //chapter_page
+            })
         })
         .catch(reject)
 });
 
 
 
+
+
+
 async function getAll() {
-    const result = await kiryuuDetail();
+    const result = await kiryuuDetailChapter();
     console.log(result);
 }
 getAll();
