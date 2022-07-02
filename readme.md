@@ -24,7 +24,7 @@ contoh : http://localhost:5000/komik/page/2
 ## Detail Komik
 Get Detail Comic
 ```
-/kiryuu/[slug]
+/komik/[slug]
 ```
 contoh : http://localhost:5000/komik/nano-machine/
 
